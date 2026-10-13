@@ -102,7 +102,12 @@ def main():
         segs.append(sgr(33) + branch + RESET + ' ' + count + '● ' + str(changed) + RESET)
 
     # context bar (10 segments) + % (mockup: "ctx ▮▮▮▮▯▯▯▯▯▯ 38%")
-    pct = context_pct(data['transcript_path']) if data.get('transcript_path') else None
+    # Claude Code sends the real figure; the transcript estimate is only a fallback for older versions
+    used = (data.get('context_window') or {}).get('used_percentage')
+    if used is not None:
+        pct = round(used)
+    else:
+        pct = context_pct(data['transcript_path']) if data.get('transcript_path') else None
     if pct is None:
         segs.append('ctx ' + sgr(90) + '▯' * 10 + ' ' + '--%' + RESET)
     else:
