@@ -129,3 +129,11 @@ Context % is estimated from the last assistant `usage` in the transcript
   degrades gracefully if a field is missing).
 - Segment widths: the status line is one line; on narrow windows it will wrap in
   the Claude Code UI — shorten the cwd or drop a segment if that bothers you.
+
+## Live check (2026-10-13, VM: kitty 0.49.2, KWin 6.7.5)
+
+- `tab_bar.py` rewritten against kitty's real API (`as_rgb(color_as_int(...))`, `cursor.decoration` + `decoration_fg`); the draft passed Color objects and guessed attribute names, so kitty fell back to the fade style. Index is already 1-based.
+- `window_padding_bottom` is not a kitty key -> `window_padding_width 22 28 0 28`.
+- Added `background_blur 32` (KWin frosted glass works) and `tab_bar_min_tabs 1` (tab line always shown, as in the mockup).
+- Kept the existing `cursor_trail` from the previous kitty.conf (the terminal's motion).
+- Still open: the window header (`▌KITTY claude · ~/src`) is the KWin decoration's job; font size to tune on the real 1080p monitor.
