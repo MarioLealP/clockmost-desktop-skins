@@ -1,0 +1,9 @@
+{
+  "name": "Endfield",
+  "base": "dark-ansi",
+  "overrides": {
+    "claude": "ansi:yellow",
+    "clawd_body": "ansi:yellow",
+    "claudeShimmer": "ansi:yellowBright"
+  }
+}

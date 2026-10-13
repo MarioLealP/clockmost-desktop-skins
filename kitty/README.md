@@ -137,3 +137,10 @@ Context % is estimated from the last assistant `usage` in the transcript
 - Added `background_blur 32` (KWin frosted glass works) and `tab_bar_min_tabs 1` (tab line always shown, as in the mockup).
 - Kept the existing `cursor_trail` from the previous kitty.conf (the terminal's motion).
 - Still open: the window header (`▌KITTY claude · ~/src`) is the KWin decoration's job; font size to tune on the real 1080p monitor.
+
+## Claude Code theme (2026-10-13)
+
+`claude-theme-endfield.json` -> `~/.claude/themes/endfield.json`, then `/theme` -> Endfield (stored as
+`custom:endfield`). Base `dark-ansi` (Claude uses kitty's Endfield palette) with Claude's brand accent + the
+Clawd mascot on `ansi:yellow` instead of `ansi:redBright` - the mock's yellow ✻ / "Tinkering…", and the crab
+no longer looks cooked (Mario). Errors / diff removals stay crimson. First theme file needs one Claude restart.
