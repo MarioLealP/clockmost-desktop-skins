@@ -237,13 +237,13 @@
     radial-gradient(rgba(17,17,17,.14) 1px, transparent 1.3px) 0 0 / 7px 7px,
     var(--yellow) !important;
 }
-#vertical-tabs .tab-content {
+#tabbrowser-tabs[expanded] .tab-content {
   position: relative;
   overflow: hidden;
   padding: 14px 16px !important;
 }
 /* the giant faint "V" on the selected tab */
-#vertical-tabs .tabbrowser-tab[selected] .tab-content::after {
+#tabbrowser-tabs[expanded] .tabbrowser-tab[selected] .tab-content::after {
   content: "V";
   position: absolute;
   right: 30px;
@@ -252,7 +252,8 @@
   color: rgba(17,17,17,.06);
   pointer-events: none;
 }
-#vertical-tabs .tab-icon-stack { display: none !important; } /* the mock has no favicons */
+/* the mock has no favicons - expanded only; collapsed tabs are nothing but their favicon */
+#tabbrowser-tabs[expanded] .tab-icon-stack { display: none !important; }
 #vertical-tabs .tab-label {
   font: 500 15px var(--f-body) !important;
   color: #5d6068 !important;
@@ -261,8 +262,8 @@
   font: 600 17px var(--f-body) !important;
   color: #111 !important;
 }
-/* the close button becomes the mock's square glyph on the right */
-#vertical-tabs .tab-close-button {
+/* the close button becomes the mock's square glyph on the right (expanded only - none when collapsed) */
+#tabbrowser-tabs[expanded] .tab-close-button {
   display: flex !important;
   width: 16px !important;
   height: 16px !important;
@@ -272,7 +273,8 @@
   fill: #a7aab0 !important;
   opacity: 1 !important;
 }
-#vertical-tabs .tabbrowser-tab[selected] .tab-close-button { border-color: #111 !important; fill: #111 !important; }
+#tabbrowser-tabs[expanded] .tabbrowser-tab[selected] .tab-close-button { border-color: #111 !important; fill: #111 !important; }
+#tabbrowser-tabs:not([expanded]) .tab-close-button { display: none !important; }
 /* .newt: dashed new-tab row */
 #vertical-tabs-newtab-button,
 #vertical-tabs #tabs-newtab-button {
