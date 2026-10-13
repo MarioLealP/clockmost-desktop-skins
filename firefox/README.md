@@ -162,4 +162,5 @@ them once via the sidebar's "Customize sidebar"). Favicons are hidden in the tab
 line and the `S.O.W. · 9 TABS · 3 SPACES` strip are removed (space-eating; the counts couldn't be real), as are the
 mock's fixed 380px side margins. Header = one row (sidebar toggle, back/forward/reload as plain square buttons,
 the address bar filling the row - Firefox's default toolbarsprings hidden - action icons, window buttons in the
-row) + the bookmarks row + the broken rule underneath. Deviates from ds-firefox-v3 on purpose.
+row) + the bookmarks row + the broken rule underneath. The sidebar's dark "▼ SPACE · CLOCKMOST" strip is removed too
+(Mario). Deviates from ds-firefox-v3 on purpose.

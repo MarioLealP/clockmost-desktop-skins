@@ -215,24 +215,8 @@
 }
 #vertical-tabs {
   position: relative;
-  padding-top: 30px !important; /* room for the dark header strip */
 }
-/* .dev: the dark header strip */
-#vertical-tabs::before {
-  content: "▼  SPACE · CLOCKMOST";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 30px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  background: #17181b;
-  color: #d8d9de;
-  font: 700 9px var(--f-mono);
-  letter-spacing: .14em;
-}
+
 /* Firefox sizes the vertical tab list narrower than the sidebar - make it fill */
 #vertical-tabs { width: 100% !important; }
 #vertical-tabs #tabbrowser-tabs,
