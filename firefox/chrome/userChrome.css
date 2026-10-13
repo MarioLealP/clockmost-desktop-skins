@@ -150,15 +150,6 @@
   color: var(--gink) !important;
   justify-content: center;
 }
-.titlebar-close {
-  width: 34px !important;
-  height: 34px !important;
-  margin-inline-start: 10px !important;
-  border-radius: 50% !important;
-  border-color: var(--gink) !important;
-  background: var(--gink) !important;
-}
-.titlebar-close { clip-path: circle(50%); } /* the native button ignores border-radius */
 /* the native glyphs come with native grey circles and the close one won't recolour: hide them and draw the
    mock's glyphs ourselves (24-unit paths as SVG masks, painted in currentColor) */
 .titlebar-button > .toolbarbutton-icon { display: none !important; }
@@ -173,12 +164,11 @@
 }
 .titlebar-min { --glyph: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'><path d='M5 12h14'/></svg>"); }
 .titlebar-max, .titlebar-restore { --glyph: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'><rect x='5' y='5' width='14' height='14'/></svg>"); }
-.titlebar-close {
-  color: var(--paper2) !important;
-  --glyph: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.4'><path d='M5 5l5 5M14 14l5 5M19 5l-5 5M10 14l-5 5'/></svg>");
-}
-.titlebar-close::before { width: 14px; height: 14px; background: var(--paper2) !important; }
-.titlebar-close:hover { background: #d91e36 !important; border-color: #d91e36 !important; }
+/* close = same outlined square as min/max (Mario: the round dark one looked too different); crimson on hover,
+   like the KWin frame's close */
+.titlebar-close { --glyph: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'><path d='M5 5l5 5M14 14l5 5M19 5l-5 5M10 14l-5 5'/></svg>"); }
+.titlebar-close:hover { background: #d91e36 !important; border-color: #d91e36 !important; color: #fff !important; }
+.titlebar-min:hover, .titlebar-max:hover, .titlebar-restore:hover { background: rgba(43,45,49,.10) !important; }
 
 /* ---------- bookmarks: text on paper with tiny black squares; folders = outlined (mock .bms) ---------- */
 #PersonalToolbar .bookmark-item {
