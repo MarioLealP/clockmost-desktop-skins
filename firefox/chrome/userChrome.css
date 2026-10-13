@@ -314,4 +314,6 @@
 /* collapsed sidebar: Firefox keeps each tab a fixed small square - stretch it so the highlight spans the rail */
 #tabbrowser-tabs:not([expanded]) .tabbrowser-tab { width: 100% !important; max-width: none !important; }
 #tabbrowser-tabs:not([expanded]) .tab-background { margin-inline: 0 !important; width: auto !important; }
-#tabbrowser-tabs:not([expanded]) .tab-content { justify-content: center !important; }
+/* favicon stays left-aligned at the same x in both states (centring it made it jump right as the collapse
+   starts, then slide back as the rail shrinks - Mario); the expanded padding below matches this one */
+#tabbrowser-tabs:not([expanded]) .tab-content { justify-content: flex-start !important; padding-inline: 14px 0 !important; }
