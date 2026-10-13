@@ -1,0 +1,21 @@
+# Endfield — SDDM greeter theme (lock v2 skin)
+# Both groups are provided on purpose: greeter/CLI tooling reads SddmGreeterTheme,
+# kcm/desktop tooling reads Desktop Entry. Same keys in both.
+
+[Desktop Entry]
+Name=Endfield
+Comment=Endfield lock v2 skin for the clockmost desktop (CachyOS / KDE Plasma 6.8)
+Author=clockmost
+Type=sddm-theme
+Version=1.0
+MainScript=Main.qml
+ConfigFile=theme.conf
+
+[SddmGreeterTheme]
+Name=Endfield
+Comment=Endfield lock v2 skin for the clockmost desktop (CachyOS / KDE Plasma 6.8)
+Author=clockmost
+Type=sddm-theme
+Version=1.0
+MainScript=Main.qml
+ConfigFile=theme.conf
