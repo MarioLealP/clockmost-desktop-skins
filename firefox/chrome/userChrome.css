@@ -240,7 +240,7 @@
 #tabbrowser-tabs[expanded] .tab-content {
   position: relative;
   overflow: hidden;
-  padding: 14px 16px !important;
+  padding: 10px 14px !important;
 }
 /* the giant faint "V" on the selected tab */
 #tabbrowser-tabs[expanded] .tabbrowser-tab[selected] .tab-content::after {
@@ -252,14 +252,14 @@
   color: rgba(17,17,17,.06);
   pointer-events: none;
 }
-/* the mock has no favicons - expanded only; collapsed tabs are nothing but their favicon */
-#tabbrowser-tabs[expanded] .tab-icon-stack { display: none !important; }
+/* favicons stay (Mario: the mock has none, but he wants them); a little space before the title */
+#tabbrowser-tabs[expanded] .tab-icon-stack { margin-inline-end: 8px !important; }
 #vertical-tabs .tab-label {
-  font: 500 15px var(--f-body) !important;
+  font: 500 13px var(--f-body) !important; /* mock 15px - "a tad too big" (Mario) */
   color: #5d6068 !important;
 }
 #vertical-tabs .tabbrowser-tab[selected] .tab-label {
-  font: 600 17px var(--f-body) !important;
+  font: 600 14px var(--f-body) !important; /* mock 17px */
   color: #111 !important;
 }
 /* the close button becomes the mock's square glyph on the right (expanded only - none when collapsed) */
