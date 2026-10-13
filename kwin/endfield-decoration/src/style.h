@@ -25,8 +25,8 @@ inline const QColor Dim{0x7d, 0x80, 0x89};
 inline const QColor Faint{0x55, 0x57, 0x5e};
 inline const QColor Yellow{0xff, 0xfa, 0x00};
 inline const QColor Crimson{0xd9, 0x1e, 0x36};
-// .wtop rgba(10,11,13,.55) over .win rgba(13,14,16,.86): composite alpha .937
-inline const QColor TitleBg{11, 12, 14, 239};
+// .wtop rgba(10,11,13,.55) over .win rgba(13,14,16,.86) = .937 in the mock
+inline const QColor TitleBg{11, 12, 14, 214}; // a touch more glass than the mock (.84, Mario 2026-10-13)
 inline const QColor Hairline{255, 255, 255, 18}; // .wtop::after .07
 inline const QColor BorderBlur{255, 255, 255, 26}; // .win .10
 inline const QColor BorderFocus{255, 255, 255, 56}; // .win.focus .22
