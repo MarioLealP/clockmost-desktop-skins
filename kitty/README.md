@@ -68,7 +68,7 @@ Context % is estimated from the last assistant `usage` in the transcript
 | `.k` glass `rgba(13,14,16,.72)` | `background #0d0e10` + `background_opacity 0.72` + KWin blur rule |
 | yellow block cursor (order) | `cursor #FFFA00`, `cursor_text_color #0d0d0e`, `cursor_shape block`, `cursor_blink_interval 0` |
 | selection (not shown in mockup) | `selection_background #FFFA00`, `selection_foreground #0d0d0e` (house rule: yellow = selected) |
-| `.term` padding `22px 28px 0` | `window_padding_top 22`, `window_padding_left/right 28`, `window_padding_bottom 0` |
+| `.term` padding `22px 28px 0` | `window_padding_width 22 28 0 28` (top right bottom left) |
 | `.tl` slim tab line | `tab_bar_edge top`, `tab_bar_style custom` + `tab_bar.py` |
 | `.tl span.on` (bright + short yellow underline) | `active_tab_foreground #f1f1f4` + yellow underline drawn in `tab_bar.py` |
 | `.tl span` inactive `--an-brblack` | `inactive_tab_foreground #6b6e76` |
