@@ -146,8 +146,6 @@ Change `monoFont` / `bodyFont` / `hostName` in `theme.conf` without touching QML
 
 ## Checks
 
-The build worker could not run any interpreter (`python3` is permission-gated in
-that environment), so syntax checks are **not** run. `sddm/.syntax_check.py`
-checks INI parsing of `theme.conf`/`metadata.desktop`, XML well-formedness of
-both SVGs, the dark-recolor counts, and bracket balance of `Main.qml` — run
-`python3 sddm/.syntax_check.py` (or delete the script after).
+Checked at review (2026-10-13): `theme.conf`/`metadata.desktop` parse as INI, both SVGs
+are well-formed XML, the dark recolor touches all 12 strokes, and `Main.qml` brackets
+balance. `Main.qml` itself is unverified until it runs in `sddm-greeter-qt6 --test-mode`.
