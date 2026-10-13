@@ -155,3 +155,11 @@ user.js (profile) - besides the four prefs above:
 Can't match (CSS limits): the tab's second line (url · age), bold host / grey path in the URL, live S.O.W. / tab
 counts (tabs live in a scroll box counters can't see into), the sidebar tool icons (shadow DOM, no parts - remove
 them once via the sidebar's "Customize sidebar"). Favicons are hidden in the tab list (the mock has none).
+
+## Simplified header (Mario 2026-10-13)
+
+"the top is completely mangled ... a lot of space on the right": the `// BROWSER / CLOCKMOST` crumb, the version
+line and the `S.O.W. · 9 TABS · 3 SPACES` strip are removed (space-eating; the counts couldn't be real), as are the
+mock's fixed 380px side margins. Header = one row (sidebar toggle, back/forward/reload as plain square buttons,
+the address bar filling the row - Firefox's default toolbarsprings hidden - action icons, window buttons in the
+row) + the bookmarks row + the broken rule underneath. Deviates from ds-firefox-v3 on purpose.

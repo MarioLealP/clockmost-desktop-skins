@@ -3,7 +3,7 @@
    #sidebar-main) - the worker draft targeted older ids and hid every toolbar icon (fill: none on fill icons).
    Needs user.js: toolkit.legacyUserProfileCustomizations.stylesheets, sidebar.revamp + sidebar.verticalTabs,
    bookmarks toolbar "always", sidebar expanded (sidebar.backupState) - see README.
-   Not possible in CSS: the tab's second line (url · age), bold host / grey path in the URL, live S.O.W. figures. */
+   Not possible in CSS: the tab's second line (url · age), bold host / grey path in the URL. */
 
 :root {
   --paper: #e9eaed;
@@ -15,7 +15,6 @@
   --yellow: #FFFA00;
   --f-mono: "JetBrains Mono", Consolas, ui-monospace, monospace;
   --f-body: Inter, "Segoe UI", system-ui, sans-serif;
-  --hd: 118px; /* the header zone: crumb, address row, bookmarks, rules */
   --side: 300px;
 }
 
@@ -37,58 +36,20 @@
   color: var(--gink) !important;
 }
 
-/* ---------- header zone ---------- */
+/* ---------- header: one toolbar row + bookmarks, the mock's broken rule underneath ----------
+   (Mario 2026-10-13: the crumb and the S.O.W. strip are gone - they ate space and the counts can't be real) */
 #navigator-toolbox {
   position: relative;
-  min-height: var(--hd);
+  padding: 8px 16px 18px !important;
   border-bottom: 0 !important;
-}
-/* .crumb: tiny version line + "// BROWSER / CLOCKMOST" */
-#navigator-toolbox::before {
-  content: "▲▲ FIREFOX 157.0";
-  position: absolute;
-  left: 40px;
-  top: 18px;
-  font: 700 7px var(--f-mono);
-  letter-spacing: .16em;
-  color: var(--gdim);
-  pointer-events: none;
-  z-index: 2;
-}
-#nav-bar::before {
-  content: "// BROWSER / CLOCKMOST";
-  position: absolute;
-  left: 40px;
-  top: 28px;
-  font: 500 16px var(--f-body);
-  letter-spacing: .04em;
-  color: var(--gink);
-  pointer-events: none;
-}
-/* .sow strip under the crumb */
-#nav-bar::after {
-  content: "S.O.W.  ————  9 TABS · 3 SPACES";
-  position: absolute;
-  left: 40px;
-  top: 60px;
-  width: 318px;
-  height: 16px;
-  padding: 0 6px;
-  display: flex;
-  align-items: center;
-  font: 700 10px var(--f-mono);
-  letter-spacing: .14em;
-  color: var(--gdim);
-  background: linear-gradient(90deg, rgba(43,45,49,.18), rgba(43,45,49,.05));
-  pointer-events: none;
 }
 /* .hr2: the long thin rule with a break + tick in the middle, under the header */
 #navigator-toolbox::after {
   content: "";
   position: absolute;
-  left: 40px;
-  right: 40px;
-  bottom: 10px;
+  left: 16px;
+  right: 16px;
+  bottom: 4px;
   height: 9px;
   pointer-events: none;
   background:
@@ -97,23 +58,15 @@
     linear-gradient(rgba(58,60,65,.18), rgba(58,60,65,.18)) 50% 3px / 18% 3px no-repeat,
     linear-gradient(var(--rule), var(--rule)) 50% 0 / 1px 9px no-repeat;
 }
-
-/* the toolbar row: address centred between 380px margins (the mock's .addr) */
-#nav-bar {
-  position: relative;
-  /* mock: 380px each side at 1920; narrower windows keep the left (crumb) and shrink the right to the buttons */
-  padding: 36px max(140px, calc(100vw - 1540px)) 0 380px !important;
-  min-height: 0 !important;
-}
-#nav-bar-customization-target { gap: 0; }
-#PersonalToolbar {
-  padding: 8px max(140px, calc(100vw - 1540px)) 0 380px !important;
-  min-height: 0 !important;
-}
+#nav-bar { padding: 0 !important; min-height: 0 !important; }
+/* Firefox's default flexible spacers either side of the address bar: gone, so the address fills the row */
+#nav-bar toolbarspring { display: none !important; }
+#urlbar-container { flex: 1 1 auto !important; max-width: none !important; }
+#PersonalToolbar { padding: 6px 0 0 !important; min-height: 0 !important; }
 
 /* ---------- address row: one white box; nav | identity block | url | actions ---------- */
 #urlbar-container { margin: 0 !important; padding: 0 !important; }
-#urlbar { --urlbar-min-height: 40px; }
+#urlbar { --urlbar-min-height: 34px; }
 #urlbar .urlbar-background {
   background: rgba(255,255,255,.75) !important;
   border: 1px solid rgba(43,45,49,.35) !important;
@@ -127,11 +80,9 @@
   outline: 2px solid var(--yellow) !important;
   outline-offset: -1px !important;
 }
-#urlbar .urlbar-input-container { padding: 0 !important; height: 40px; }
 #urlbar-input {
   font: 14px var(--f-body) !important;
   color: var(--gink) !important;
-  padding-inline: 14px !important;
 }
 #urlbar-input::selection { background: var(--yellow); color: #111; }
 /* .sid: black site-identity block. Firefox 157 shows the shield as the new trust icon (#trust-icon-container);
@@ -146,11 +97,10 @@
   color: var(--paper2) !important;
   fill: var(--paper2) !important;
 }
-#trust-icon-container { padding-inline: 12px !important; margin: 0 !important; }
+#trust-icon-container { padding-inline: 10px !important; margin: 0 6px 0 0 !important; }
 #trust-icon-container * { fill: var(--paper2) !important; color: var(--paper2) !important; }
 #trust-label { font: 700 9px var(--f-mono) !important; letter-spacing: .18em !important; text-transform: uppercase !important; }
-#tracking-protection-icon-container { padding-inline: 10px 4px !important; }
-#identity-box .identity-box-button { padding-inline: 4px 12px !important; }
+
 #identity-icon-label {
   font: 700 9px var(--f-mono) !important;
   letter-spacing: .18em !important;
@@ -176,14 +126,6 @@
   background: rgba(43,45,49,.10) !important;
 }
 #nav-bar toolbarbutton[disabled] { opacity: .3 !important; }
-/* back / forward / reload sit inside the address box, left of it, with a divider (mock .nav) */
-#back-button, #forward-button, #stop-reload-button, #reload-button {
-  background: rgba(255,255,255,.75) !important;
-  border-block: 1px solid rgba(43,45,49,.35) !important;
-  margin: 0 !important;
-}
-#back-button { border-inline-start: 1px solid rgba(43,45,49,.35) !important; padding-inline-start: 8px !important; }
-#stop-reload-button, #reload-button { border-inline-end: 1px solid rgba(43,45,49,.2) !important; padding-inline-end: 8px !important; }
 /* the yellow NEW badge (downloads) */
 .toolbarbutton-badge {
   background: var(--yellow) !important;
@@ -195,12 +137,7 @@
 }
 
 /* ---------- window buttons: square min/max + dark round close (mock .mm / .xc) ---------- */
-.titlebar-buttonbox-container {
-  position: fixed;
-  top: 16px;
-  right: 40px;
-  z-index: 10;
-}
+.titlebar-buttonbox-container { margin-inline-start: 14px; align-items: center; }
 .titlebar-buttonbox { gap: 6px; align-items: center; }
 .titlebar-button {
   appearance: none !important;
@@ -216,7 +153,7 @@
 .titlebar-close {
   width: 34px !important;
   height: 34px !important;
-  margin-inline-start: 18px !important;
+  margin-inline-start: 10px !important;
   border-radius: 50% !important;
   border-color: var(--gink) !important;
   background: var(--gink) !important;
