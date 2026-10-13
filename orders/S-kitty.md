@@ -1,5 +1,7 @@
 # Order S-kitty: real skin files for `kitty` from the approved mockup
 
+Do NOT use the Skill tool (it only pulls in unrelated reference text). Write the files directly; keep thinking short.
+
 Source of truth (read-only): `~/ref/mocks/components/ds-kitty-v3.html` (open it, read ALL its CSS/HTML), the house style
 `~/ref/mocks/components/ds-shell.css` and rules `~/ref/mocks/orders/STYLE.md`, and the decisions in
 `~/ref/mocks/WORKLOG.md` (search for the app name). Shared assets: `~/ref/mocks/src/assets/`.
