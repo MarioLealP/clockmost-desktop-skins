@@ -1,0 +1,400 @@
+/**
+ * @name Endfield
+ * @author benylin
+ * @version 1.0.0
+ * @description Endfield desktop skin (from ds-discord v2 mock): layered dark surfaces (s0-s3), mono small-caps labels, yellow active server indicator + active channel tick, crimson mention badges, soft yellow mention highlight. Default Discord layout, colours and type only.
+ */
+
+/* Fonts: mono = JetBrains Mono (Consolas-like), body = Inter (Segoe-like).
+   Offline: install them system-wide instead - the fallbacks below still apply. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap");
+
+/* ===========================================================================
+   Surfaces + ink + signals (exact mockup / house-style hexes)
+   mockup :root -> Discord theme variables; class rules below only where
+   Discord has no variable. */
+:root {
+  /* type stacks */
+  --ef-mono: "JetBrains Mono", Consolas, "Cascadia Mono", ui-monospace, monospace;
+  --ef-body: Inter, "Segoe UI", system-ui, sans-serif;
+
+  /* surfaces: s0 #0e0f11 / s1 #131417 / s2 #17181c / s3 #1c1d22 */
+  --background-primary: #17181c;        /* s2 - chat column */
+  --background-secondary: #131417;      /* s1 - channel + member sidebars */
+  --background-secondary-alt: #0e0f11;  /* s0 - user panel strip */
+  --background-tertiary: #0e0f11;       /* s0 - server rail, search, inputs */
+  --background-floating: #1c1d22;       /* s3 - popouts, tooltips, menus */
+  --channeltextarea-background: #1c1d22;/* s3 - composer */
+  --modal-background: #17181c;
+  --modal-footer-background: #131417;
+
+  /* hover / selected washes: --hl rgba(255,255,255,.06) */
+  --background-accent: #FFFA00;                 /* yellow = "where you are" */
+  --background-modifier-hover: rgba(255,255,255,.04);
+  --background-modifier-selected: rgba(255,255,255,.06);
+  --background-modifier-active: rgba(255,255,255,.08);
+  --background-modifier-accent: rgba(255,255,255,.08); /* hairlines */
+  --background-message-hover: rgba(255,255,255,.04);
+
+  /* mention highlight: soft yellow (mockup .m.mention) */
+  --background-message-highlight: rgba(255,250,0,.05);
+  --mention-foreground: #FFFA00;
+  --mention-background: rgba(255,250,0,.12);
+
+  /* ink */
+  --header-primary: #f1f1f4;   /* --ink */
+  --header-secondary: #7d8089; /* --dim */
+  --text-normal: #c9ccd3;      /* --ink2 */
+  --text-muted: #55575e;       /* --faint */
+  --text-link: #5aa7ff;        /* --blue */
+  --interactive-normal: #c9ccd3;
+  --interactive-hover: #f1f1f4;
+  --interactive-active: #f1f1f4;
+  --interactive-muted: #55575e;
+
+  /* signals */
+  --status-online: #7ddb57;    /* --green */
+  --status-idle: #ff9e2c;      /* --orange */
+  --status-dnd: #d91e36;       /* --crimson */
+  --status-offline: #6b6e76;
+  --status-danger: #d91e36;    /* crimson mention badges */
+}
+
+/* base type: body = Inter, readable content 15px / 1.375 (mockup .dc / .m) */
+body, button, input, textarea, select {
+  font-family: var(--ef-body);
+}
+[class*="markup"] {
+  font-family: var(--ef-body);
+  font-size: 15px;
+  line-height: 1.375;
+  color: #c9ccd3;
+}
+
+/* ===========================================================================
+   1. server rail (mockup .rail / .sv)
+   circles stay Discord's own; active tile = rounded square (Discord convention) */
+nav[class*="guilds"] {
+  background-color: #0e0f11;
+}
+/* group separators (mockup .rail .sep: 30x2, faint) */
+nav[class*="guilds"] [class*="separator"] {
+  width: 30px;
+  height: 2px;
+  background: rgba(255,255,255,.06);
+}
+/* indicator pill (mockup .sv .ind): unread = 4x8 ink tick, active = 4x36 yellow */
+nav[class*="guilds"] [class*="pill"] span {
+  width: 4px;
+  height: 8px;
+  border-radius: 0;
+  background: #f1f1f4;
+}
+nav[class*="guilds"] [aria-selected="true"] [class*="pill"] span,
+nav[class*="guilds"] [class*="selected"] [class*="pill"] span {
+  height: 36px;
+  background: #FFFA00;
+}
+/* mention badges on the rail (mockup .sv .mb): crimson pill, mono 10px */
+nav[class*="guilds"] [class*="numberBadge"] {
+  height: 16px;
+  min-width: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background-color: #d91e36;
+  color: #fff;
+  font: 700 10px/16px var(--ef-mono);
+}
+/* add-server button (mockup .sv.add): green +, dashed ring */
+nav[class*="guilds"] [class*="circleIconButton"] {
+  background-color: transparent;
+  border: 1px dashed rgba(125,219,87,.5);
+  border-radius: 50%;
+  color: #7ddb57;
+}
+
+/* ===========================================================================
+   2. channel sidebar (mockup .side / .shd / .chs / .up) */
+/* server header: mono plate + the one faint topo motif (mockup .shd) */
+div[class*="sidebar"] div[class*="header"] {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0,0,0,.4);
+  box-shadow: none;
+}
+div[class*="sidebar"] div[class*="header"] h1,
+div[class*="sidebar"] div[class*="header"] [class*="name"] {
+  font: 700 13px/1.2 var(--ef-mono);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #f1f1f4;
+}
+/* mockup .shd .topo: ds-topo-card.svg at right:-40 top:-30, 200x120, cover, opacity .12 */
+div[class*="sidebar"] div[class*="header"]::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -30px;
+  width: 200px;
+  height: 120px;
+  opacity: .12;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120'%3E%3Cg fill='none' stroke='rgba(205,209,220,0.18)' stroke-width='1'%3E%3Cpath d='M-10 108C30 78 70 62 116 56c40-5 72 4 96 18'/%3E%3Cpath d='M-10 96C34 68 76 52 122 46c38-5 66 2 88 14'/%3E%3Cpath d='M-6 82C36 58 78 44 122 38c34-5 58 0 78 10'/%3E%3Cpath d='M2 68C42 48 80 36 120 30c28-4 48 0 64 8'/%3E%3Cpath d='M14 54c34-14 66-24 100-28 20-3 36-2 48 2'/%3E%3Cpath d='M30 42c28-10 56-18 84-20'/%3E%3C/g%3E%3C/svg%3E") center / cover no-repeat;
+}
+
+/* category labels + member role headers (mockup .cat / .mem .rl):
+   mono 700 10px, .2em, uppercase, --dim */
+div[class*="sidebar"] h3,
+div[class*="sidebar"] h3 span,
+[class*="membersGroup"] {
+  font-family: var(--ef-mono);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #7d8089;
+}
+div[class*="sidebar"] h3 svg,
+[class*="membersGroup"] svg {
+  color: #7d8089;
+}
+
+/* channel rows: 4px radius (mockup .ch), 32-34px rhythm kept at Discord defaults */
+/* active (mockup .ch.on): faint wash + 3px yellow tick at the sidebar edge */
+div[class*="modeSelected"] {
+  position: relative;
+  background-color: rgba(255,255,255,.06);
+}
+div[class*="modeSelected"]::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  background: #FFFA00;
+}
+div[class*="modeSelected"] [class*="name"] {
+  color: #f1f1f4;
+}
+/* unread (mockup .ch.unread): ink text 600 + 4x8 ink tick at the sidebar edge */
+div[class*="modeUnread"],
+div[class*="modeUnreadImportant"] {
+  position: relative;
+}
+div[class*="modeUnread"] [class*="name"],
+div[class*="modeUnreadImportant"] [class*="name"] {
+  color: #f1f1f4;
+  font-weight: 600;
+}
+div[class*="modeUnread"]::before,
+div[class*="modeUnreadImportant"]::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  width: 4px;
+  height: 8px;
+  margin-top: -4px;
+  background: #f1f1f4;
+}
+/* sidebar mention badges (mockup .ch .mb): crimson, mono 10px, square */
+div[class*="sidebar"] [class*="numberBadge"] {
+  height: 16px;
+  min-width: 18px;
+  padding: 0 4px;
+  border-radius: 0;
+  background-color: #d91e36;
+  color: #fff;
+  font: 700 10px/16px var(--ef-mono);
+}
+
+/* user panel (mockup .up): s0 strip, 13px name, mono green status line */
+div[class*="panels"] {
+  background-color: #0e0f11;
+}
+div[class*="panels"] [class*="nameTag"] [class*="title"] {
+  font-family: var(--ef-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f1f4;
+}
+div[class*="panels"] [class*="subtext"] {
+  font: 400 9px/1.2 var(--ef-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #7ddb57;
+}
+
+/* ===========================================================================
+   3. chat (mockup .chat / .chd / .msgs / .comp) */
+div[class*="title"] {
+  border-bottom: 1px solid rgba(0,0,0,.4);
+  box-shadow: none;
+}
+/* channel name stays body type (mockup .chd b: body 600 16px); # glyph faint */
+div[class*="title"] h1 {
+  font-family: var(--ef-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: #f1f1f4;
+}
+div[class*="title"] svg {
+  color: #55575e;
+}
+/* topic (mockup .chd .tp) */
+[class*="topic"] {
+  font-family: var(--ef-body);
+  font-size: 13px;
+  color: #7d8089;
+}
+/* search (mockup .chd .srch): s0, mono 11px, .12em, faint */
+div[class*="searchBar"] {
+  background-color: #0e0f11;
+}
+div[class*="searchBar"] input,
+div[class*="searchBar"] [class*="search"] {
+  background-color: #0e0f11;
+}
+div[class*="searchBar"] input,
+div[class*="searchBar"] [class*="placeholder"] {
+  font: 400 11px/1.2 var(--ef-mono);
+  letter-spacing: .12em;
+  color: #55575e;
+}
+
+/* date divider (mockup .day): mono 700 10px, .2em, uppercase, --faint */
+div[class*="messagesWrapper"] div[class*="divider"] span {
+  font-family: var(--ef-mono);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #55575e;
+}
+/* timestamps (mockup .m .nm small): mono 10px, .1em, faint */
+time[class*="timestamp"],
+[class*="timestamp"] {
+  font-family: var(--ef-mono);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: #55575e;
+}
+/* author names (mockup .m .nm b): body 600 15px, role colour stays Discord's */
+[class*="username"] {
+  font-family: var(--ef-body);
+  font-size: 15px;
+  font-weight: 600;
+}
+/* role chip (mockup .role) approximated on the bot tag */
+span[class*="botTag"] {
+  background-color: rgba(255,255,255,.08);
+  color: #7d8089;
+  font: 700 8px/1.4 var(--ef-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+/* reply preview (mockup .m .rp) */
+div[class*="repliedMessage"] {
+  font-family: var(--ef-body);
+  font-size: 13px;
+  color: #7d8089;
+}
+/* mentioned message (mockup .m.mention): soft yellow + 2px yellow inset bar */
+li[class*="mentioned"],
+div[class*="mentioned"] {
+  background-color: rgba(255,250,0,.05);
+  box-shadow: inset 2px 0 0 #FFFA00;
+}
+/* inline @mention chip (mockup .at) */
+a[class*="mention"]:not([class*="mentioned"]) {
+  color: #FFFA00;
+  background-color: rgba(255,250,0,.12);
+  padding: 0 3px;
+  border-radius: 0;
+}
+
+/* reactions (mockup .rx): s3 pill, 8px, mono 11px; .me = blue tint */
+div[class*="reaction"]:not([class*="reactions"]):not([class*="Inner"]):not([class*="Count"]) {
+  height: 24px;
+  background-color: #1c1d22;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  color: #c9ccd3;
+}
+[class*="reactionCount"] {
+  font-family: var(--ef-mono);
+  font-size: 11px;
+  color: #c9ccd3;
+}
+div[class*="reactionMe"] {
+  border-color: rgba(90,167,255,.6);
+  background-color: rgba(90,167,255,.12);
+}
+
+/* embed card (mockup .emb): s1, 4px, 4px left accent bar (bar colour = per-embed) */
+div[class*="embedFull"],
+article[class*="embed"] {
+  background-color: #131417;
+  border-radius: 4px;
+  border-left-width: 4px;
+  border-left-style: solid;
+}
+[class*="embedProvider"] {
+  font: 400 9px/1.2 var(--ef-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #7d8089;
+}
+[class*="embedTitle"] {
+  font-family: var(--ef-body);
+  font-weight: 600;
+  color: #5aa7ff;
+}
+[class*="embedDescription"] {
+  font-family: var(--ef-body);
+  font-size: 13px;
+  color: #c9ccd3;
+}
+
+/* composer (mockup .comp): s3, 8px, faint placeholder; attach tile square ink2 */
+div[class*="channelTextArea"] {
+  background-color: #1c1d22;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 8px;
+}
+div[class*="channelTextArea"] [class*="placeholder"] {
+  font-family: var(--ef-body);
+  color: #55575e;
+}
+div[class*="channelTextArea"] div[class*="attachButton"] {
+  width: 24px;
+  height: 24px;
+  border-radius: 0;
+  background-color: #c9ccd3;
+  color: #17181c;
+}
+div[class*="channelTextArea"] div[class*="attachButton"] svg {
+  width: 12px;
+  height: 12px;
+  color: #17181c;
+}
+/* typing line (mockup .typing) */
+div[class*="typing"] {
+  font-family: var(--ef-body);
+  font-size: 12px;
+  color: #7d8089;
+}
+
+/* ===========================================================================
+   4. members (mockup .mem / .mm) - avatars + status dots stay Discord circles */
+div[class*="membersWrap"] [class*="name"] {
+  font-family: var(--ef-body);
+  font-size: 14px;
+  font-weight: 500;
+}
+li[class*="member"]:not([class*="members"]),
+div[class*="member"]:not([class*="members"]) {
+  border-radius: 4px;
+}
