@@ -1,313 +1,399 @@
-/* userChrome.css - Intel Archive light chrome for Firefox 157 (CachyOS / KDE Wayland).
-   Source of truth: ref/mocks/components/ds-firefox-v3.html + ds-shell.css (house style).
-   Installs into <profile>/chrome/userChrome.css. Requires toolkit.legacyUserProfileCustomizations.stylesheets = true.
-   Colours are copied from the mockup hex-for-hex. Small print is static texture (CSS cannot count tabs/bookmarks). */
+/* userChrome.css - the "Intel Archive" light chrome from ds-firefox-v3.html, for Firefox 157 (CachyOS / KDE Wayland).
+   Rewritten 2026-10-13 against Firefox 157's real markup (moz-urlbar / .urlbar-background, #vertical-tabs,
+   #sidebar-main) - the worker draft targeted older ids and hid every toolbar icon (fill: none on fill icons).
+   Needs user.js: toolkit.legacyUserProfileCustomizations.stylesheets, sidebar.revamp + sidebar.verticalTabs,
+   bookmarks toolbar "always", sidebar expanded (sidebar.backupState) - see README.
+   Not possible in CSS: the tab's second line (url · age), bold host / grey path in the URL, live S.O.W. figures. */
 
 :root {
-  /* palette - ds-firefox-v3 :root + ds-shell.css (--yellow) */
-  --paper:  #e9eaed;
+  --paper: #e9eaed;
   --paper2: #f4f5f7;
-  --rule:   #3a3c41;
-  --gink:   #2b2d31;
-  --gdim:   #7d8089;
-  --cyanp:  #2aa8e0;
+  --rule: #3a3c41;
+  --gink: #2b2d31;
+  --gdim: #7d8089;
+  --cyanp: #2aa8e0;
   --yellow: #FFFA00;
-  /* type - order S-firefox: mono = JetBrains Mono, body = Inter (see README) */
-  --f-mono: "JetBrains Mono", Consolas, "Cascadia Mono", ui-monospace, monospace;
+  --f-mono: "JetBrains Mono", Consolas, ui-monospace, monospace;
   --f-body: Inter, "Segoe UI", system-ui, sans-serif;
+  --hd: 118px; /* the header zone: crumb, address row, bookmarks, rules */
+  --side: 300px;
 }
 
-/* the .ffl window ground: white highlight + faint 22px dot grid + pale paper gradient */
+/* ---------- ground: white bloom + 22px dot grid + pale paper gradient, behind all chrome ---------- */
 #navigator-toolbox,
-#sidebar-main {
+#browser,
+#sidebar-main,
+#tabbrowser-tabbox {
   background:
     radial-gradient(ellipse 700px 420px at 72% 6%, rgba(255,255,255,.95), transparent 70%),
     radial-gradient(rgba(43,45,49,.10) 1px, transparent 1.3px) 0 0 / 22px 22px,
     linear-gradient(180deg, #f1f2f4, #e3e4e8) !important;
-  background-attachment: fixed !important;
-  color: var(--gink);
-}
-#TabsToolbar,
-#nav-bar,
-#PersonalToolbar {
-  background: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
-}
-
-/* ---------- .crumb header strip ("// BROWSER" feel) ----------
-   mock: small 700 7px mono "▲▲ FIREFOX 157.0" over 500 16px body "// BROWSER / CLOCKMOST" */
-#navigator-toolbox::before {
-  content: "▲▲ FIREFOX 157.0\A // BROWSER / CLOCKMOST";
-  white-space: pre;
-  display: block;
-  padding: 8px 20px 6px;
-  font: 500 16px/1.15 var(--f-body);
-  letter-spacing: .04em;
-  color: var(--gink);
-}
-
-/* ---------- .hr2: the thin rule with the break in the middle, under the chrome ---------- */
-#navigator-toolbox::after {
-  content: "";
-  display: block;
-  height: 6px;
-  margin: 0 40px;
-  background:
-    linear-gradient(var(--rule), var(--rule)) 0 2px / 41% 1px no-repeat,
-    linear-gradient(var(--rule), var(--rule)) 100% 2px / 41% 1px no-repeat,
-    linear-gradient(rgba(58,60,65,.18), rgba(58,60,65,.18)) 50% 1px / 18% 3px no-repeat,
-    linear-gradient(var(--rule), var(--rule)) 50% -1px / 1px 9px no-repeat;
-}
-
-/* ---------- window buttons (.mm min/max squares + .xc dark circle close) ---------- */
-.titlebar-buttonbox { gap: 6px; }
-.titlebar-button {
-  appearance: none !important;
-  width: 24px !important;
-  height: 24px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: 1px solid rgba(43,45,49,.4) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
   color: var(--gink) !important;
 }
-.titlebar-button > .toolbarbutton-icon { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 3; }
-.titlebar-close {
-  width: 28px !important;
-  height: 28px !important;
-  border-radius: 50% !important;
-  background: var(--gink) !important;
-  color: var(--paper2) !important;
-  border-color: var(--gink) !important;
+#nav-bar, #PersonalToolbar, #TabsToolbar, #titlebar {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--gink) !important;
 }
-.titlebar-close:hover { background: #17181b !important; }
 
-/* ---------- .addr address row ---------- */
-#urlbar {
-  --urlbar-height: 40px;
-  color: var(--gink);
+/* ---------- header zone ---------- */
+#navigator-toolbox {
+  position: relative;
+  min-height: var(--hd);
+  border-bottom: 0 !important;
 }
-#urlbar-background {
-  min-height: 40px !important;
+/* .crumb: tiny version line + "// BROWSER / CLOCKMOST" */
+#navigator-toolbox::before {
+  content: "▲▲ FIREFOX 157.0";
+  position: absolute;
+  left: 40px;
+  top: 18px;
+  font: 700 7px var(--f-mono);
+  letter-spacing: .16em;
+  color: var(--gdim);
+  pointer-events: none;
+  z-index: 2;
+}
+#nav-bar::before {
+  content: "// BROWSER / CLOCKMOST";
+  position: absolute;
+  left: 40px;
+  top: 28px;
+  font: 500 16px var(--f-body);
+  letter-spacing: .04em;
+  color: var(--gink);
+  pointer-events: none;
+}
+/* .sow strip under the crumb */
+#nav-bar::after {
+  content: "S.O.W.  ————  9 TABS · 3 SPACES";
+  position: absolute;
+  left: 40px;
+  top: 60px;
+  width: 318px;
+  height: 16px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  font: 700 10px var(--f-mono);
+  letter-spacing: .14em;
+  color: var(--gdim);
+  background: linear-gradient(90deg, rgba(43,45,49,.18), rgba(43,45,49,.05));
+  pointer-events: none;
+}
+/* .hr2: the long thin rule with a break + tick in the middle, under the header */
+#navigator-toolbox::after {
+  content: "";
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 10px;
+  height: 9px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--rule), var(--rule)) 0 4px / 41% 1px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 100% 4px / 41% 1px no-repeat,
+    linear-gradient(rgba(58,60,65,.18), rgba(58,60,65,.18)) 50% 3px / 18% 3px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 50% 0 / 1px 9px no-repeat;
+}
+
+/* the toolbar row: address centred between 380px margins (the mock's .addr) */
+#nav-bar {
+  position: relative;
+  /* mock: 380px each side at 1920; narrower windows keep the left (crumb) and shrink the right to the buttons */
+  padding: 36px max(140px, calc(100vw - 1540px)) 0 380px !important;
+  min-height: 0 !important;
+}
+#nav-bar-customization-target { gap: 0; }
+#PersonalToolbar {
+  padding: 8px max(140px, calc(100vw - 1540px)) 0 380px !important;
+  min-height: 0 !important;
+}
+
+/* ---------- address row: one white box; nav | identity block | url | actions ---------- */
+#urlbar-container { margin: 0 !important; padding: 0 !important; }
+#urlbar { --urlbar-min-height: 40px; }
+#urlbar .urlbar-background {
   background: rgba(255,255,255,.75) !important;
   border: 1px solid rgba(43,45,49,.35) !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   outline: none !important;
 }
-/* yellow = focused (house rule) */
-#urlbar[focused] > #urlbar-background,
-#urlbar[open] > #urlbar-background {
-  border-color: var(--yellow) !important;
-  outline: 1px solid var(--yellow) !important;
+#urlbar[focused] .urlbar-background,
+#urlbar[open] .urlbar-background {
+  border-color: var(--gink) !important;
+  outline: 2px solid var(--yellow) !important;
+  outline-offset: -1px !important;
 }
-/* .sid black site-identity block */
-#identity-box {
-  background: var(--gink) !important;
-  color: var(--paper2) !important;
-  padding: 0 12px !important;
+#urlbar .urlbar-input-container { padding: 0 !important; height: 40px; }
+#urlbar-input {
+  font: 14px var(--f-body) !important;
+  color: var(--gink) !important;
+  padding-inline: 14px !important;
+}
+#urlbar-input::selection { background: var(--yellow); color: #111; }
+/* .sid: black site-identity block. Firefox 157 shows the shield as the new trust icon (#trust-icon-container);
+   the old identity box stays for non-web pages - paint both */
+#trust-icon-container,
+#identity-box,
+#identity-box .identity-box-button,
+#tracking-protection-icon-container {
   margin: 0 !important;
   border-radius: 0 !important;
+  background: var(--gink) !important;
+  color: var(--paper2) !important;
+  fill: var(--paper2) !important;
 }
-#identity-box[pageproxystate="invalid"] { background: #d91e36 !important; }
-#identity-icon { fill: var(--paper2) !important; stroke: var(--paper2) !important; }
+#trust-icon-container { padding-inline: 12px !important; margin: 0 !important; }
+#trust-icon-container * { fill: var(--paper2) !important; color: var(--paper2) !important; }
+#trust-label { font: 700 9px var(--f-mono) !important; letter-spacing: .18em !important; text-transform: uppercase !important; }
+#tracking-protection-icon-container { padding-inline: 10px 4px !important; }
+#identity-box .identity-box-button { padding-inline: 4px 12px !important; }
 #identity-icon-label {
   font: 700 9px var(--f-mono) !important;
   letter-spacing: .18em !important;
   text-transform: uppercase !important;
   color: var(--paper2) !important;
 }
-/* .u the URL text (bold host / grey path is NOT possible - see README) */
-#urlbar-input {
-  font: 14px var(--f-body) !important;
-  color: var(--gink) !important;
-}
-#urlbar-input::selection { background: var(--yellow); color: #111; }
 
-/* nav + action buttons: square 28px cells, ink icons, disabled = .3 (mock .nav .off) */
+/* nav + action buttons: square 28px cells, ink icons (they are FILL icons - keep fill), disabled = .3 */
 #nav-bar toolbarbutton,
-#urlbar toolbarbutton {
-  appearance: none !important;
+#urlbar .urlbar-page-action,
+#urlbar #star-button-box {
   border-radius: 0 !important;
   color: var(--gink) !important;
+  fill: var(--gink) !important;
 }
-#nav-bar .toolbarbutton-icon,
-#urlbar .toolbarbutton-icon {
-  width: 16px !important;
-  height: 16px !important;
-  fill: none !important;
-  stroke: currentColor !important;
-  stroke-width: 2.4 !important;
+#nav-bar toolbarbutton > .toolbarbutton-icon,
+#nav-bar toolbarbutton > .toolbarbutton-badge-stack {
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+#nav-bar toolbarbutton:not([disabled]):hover > .toolbarbutton-icon,
+#nav-bar toolbarbutton:not([disabled]):hover > .toolbarbutton-badge-stack {
+  background: rgba(43,45,49,.10) !important;
 }
 #nav-bar toolbarbutton[disabled] { opacity: .3 !important; }
-/* the mock's yellow NEW badge on the download button (.ex .nw2) */
+/* back / forward / reload sit inside the address box, left of it, with a divider (mock .nav) */
+#back-button, #forward-button, #stop-reload-button, #reload-button {
+  background: rgba(255,255,255,.75) !important;
+  border-block: 1px solid rgba(43,45,49,.35) !important;
+  margin: 0 !important;
+}
+#back-button { border-inline-start: 1px solid rgba(43,45,49,.35) !important; padding-inline-start: 8px !important; }
+#stop-reload-button, #reload-button { border-inline-end: 1px solid rgba(43,45,49,.2) !important; padding-inline-end: 8px !important; }
+/* the yellow NEW badge (downloads) */
 .toolbarbutton-badge {
   background: var(--yellow) !important;
   color: #111 !important;
   border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   font: 700 7px var(--f-mono) !important;
-  padding: 1px 3px !important;
 }
 
-/* ---------- .bms bookmarks toolbar: greyscale favicons -> colour on hover (WORKLOG decision) ---------- */
-#PersonalToolbar {
-  padding: 0 20px !important;
-  min-height: 32px !important;
+/* ---------- window buttons: square min/max + dark round close (mock .mm / .xc) ---------- */
+.titlebar-buttonbox-container {
+  position: fixed;
+  top: 16px;
+  right: 40px;
+  z-index: 10;
 }
-#PersonalToolbar .bookmark-item {
+.titlebar-buttonbox { gap: 6px; align-items: center; }
+.titlebar-button {
   appearance: none !important;
-  padding: 4px 6px !important;
-  margin: 0 12px 0 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(43,45,49,.4) !important;
   border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--gink) !important;
+  justify-content: center;
+}
+.titlebar-close {
+  width: 34px !important;
+  height: 34px !important;
+  margin-inline-start: 18px !important;
+  border-radius: 50% !important;
+  border-color: var(--gink) !important;
+  background: var(--gink) !important;
+}
+.titlebar-close { clip-path: circle(50%); } /* the native button ignores border-radius */
+/* the native glyphs come with native grey circles and the close one won't recolour: hide them and draw the
+   mock's glyphs ourselves (24-unit paths as SVG masks, painted in currentColor) */
+.titlebar-button > .toolbarbutton-icon { display: none !important; }
+.titlebar-button::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  margin: auto;
+  background: currentColor;
+  -webkit-mask: var(--glyph) center / contain no-repeat;
+  mask: var(--glyph) center / contain no-repeat;
+}
+.titlebar-min { --glyph: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'><path d='M5 12h14'/></svg>"); }
+.titlebar-max, .titlebar-restore { --glyph: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'><rect x='5' y='5' width='14' height='14'/></svg>"); }
+.titlebar-close {
+  color: var(--paper2) !important;
+  --glyph: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.4'><path d='M5 5l5 5M14 14l5 5M19 5l-5 5M10 14l-5 5'/></svg>");
+}
+.titlebar-close::before { width: 14px; height: 14px; background: var(--paper2) !important; }
+.titlebar-close:hover { background: #d91e36 !important; border-color: #d91e36 !important; }
+
+/* ---------- bookmarks: text on paper with tiny black squares; folders = outlined (mock .bms) ---------- */
+#PersonalToolbar .bookmark-item {
   font: 12px var(--f-body) !important;
   color: var(--gink) !important;
+  border-radius: 0 !important;
+  padding: 2px 6px !important;
+  margin-inline-end: 10px !important;
 }
-#PersonalToolbar .bookmark-item:hover:not([disabled]) {
-  background: rgba(205,207,212,.8) !important;
+#PersonalToolbar .bookmark-item > .toolbarbutton-icon { display: none !important; }
+#PersonalToolbar .bookmark-item::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-inline-end: 6px;
+  background: var(--gink);
 }
-#PersonalToolbar .bookmark-item .toolbarbutton-icon {
-  width: 14px !important;
-  height: 14px !important;
-  margin-inline-end: 6px !important;
-  filter: grayscale(1);
+#PersonalToolbar .bookmark-item[container]::before {
+  width: 9px;
+  height: 7px;
+  background: none;
+  border: 1.5px solid var(--gink);
+  box-sizing: border-box;
 }
-#PersonalToolbar .bookmark-item:hover .toolbarbutton-icon {
-  filter: none;
-}
-/* .bms .end micro label at the right end */
-#PersonalToolbar::after {
-  content: "BOOKMARKS · OTHER ›";
-  margin-left: auto;
-  padding-right: 4px;
-  font: 9px var(--f-mono) !important;
-  letter-spacing: .16em;
-  color: var(--gdim);
-}
+#PersonalToolbar .bookmark-item:hover { background: rgba(43,45,49,.08) !important; }
+#personal-toolbar-empty-description { font: 9px var(--f-mono) !important; letter-spacing: .16em !important; color: var(--gdim) !important; text-transform: uppercase; }
 
-/* ---------- .lt vertical mission tabs (sidebar.verticalTabs), 300px ---------- */
+/* ---------- left: the vertical "mission" tab list (mock .lt) ---------- */
 #sidebar-main {
-  width: 300px !important;
-  min-width: 300px !important;
-  max-width: 300px !important;
-}
-#sidebar-splitter {
+  margin: 0 20px 24px 20px !important;
+  min-width: var(--side) !important;
+  max-width: var(--side) !important;
   border: 0 !important;
-  border-right: 1px solid rgba(43,45,49,.3) !important;
-  background: transparent !important;
-  width: 1px !important;
 }
-/* .dev dark space header ("SPACE · CLOCKMOST") */
-#sidebar-main::before {
-  content: "▼ SPACE · CLOCKMOST";
-  display: flex;
-  align-items: center;
+#vertical-tabs {
+  position: relative;
+  padding-top: 30px !important; /* room for the dark header strip */
+}
+/* .dev: the dark header strip */
+#vertical-tabs::before {
+  content: "▼  SPACE · CLOCKMOST";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
   height: 30px;
   padding: 0 10px;
+  display: flex;
+  align-items: center;
   background: #17181b;
   color: #d8d9de;
   font: 700 9px var(--f-mono);
   letter-spacing: .14em;
-  overflow: hidden;
 }
-/* .lfoot micro footer (static texture - CSS cannot count tabs) */
-#sidebar-main::after {
-  content: "TABS · SPACES · CTRL 1-3";
-  margin-top: auto;
-  padding: 8px 10px;
-  font: 8px var(--f-mono);
-  letter-spacing: .16em;
-  color: var(--gdim);
+/* Firefox sizes the vertical tab list narrower than the sidebar - make it fill */
+#vertical-tabs { width: 100% !important; }
+#vertical-tabs #tabbrowser-tabs,
+#vertical-tabs #tabbrowser-arrowscrollbox {
+  width: auto !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  flex: 1 1 auto !important;
 }
-
-#tabbrowser-tabs,
-#tabbrowser-arrowscrollbox {
-  background: transparent !important;
-}
-/* .tab row: translucent white over the dot grid, hairline between rows */
-.tabbrowser-tab {
-  appearance: none !important;
+#vertical-tabs .tabbrowser-tab {
+  max-width: none !important;
+  width: 100% !important;
   padding: 0 !important;
   margin: 0 !important;
-  min-height: 56px !important;
-  border-bottom: 1px solid rgba(43,45,49,.18) !important;
-  border-radius: 0 !important;
+  min-height: 0 !important;
 }
-.tabbrowser-tab .tab-background {
-  appearance: none !important;
+#vertical-tabs .tab-background {
   margin: 0 !important;
-  border: 0 !important;
   border-radius: 0 !important;
-  background: rgba(255,255,255,.55) !important;
-  background-image: none !important;
   box-shadow: none !important;
   outline: none !important;
+  background: rgba(255,255,255,.55) !important;
+  border-bottom: 1px solid rgba(43,45,49,.18) !important;
 }
-.tabbrowser-tab .tab-stack { margin: 0 !important; }
-.tabbrowser-tab .tab-content {
-  padding: 12px 40px 12px 16px !important;
+#vertical-tabs .tabbrowser-tab:hover .tab-background { background: rgba(205,207,212,.8) !important; }
+#vertical-tabs .tabbrowser-tab[selected] .tab-background {
+  background:
+    radial-gradient(rgba(17,17,17,.14) 1px, transparent 1.3px) 0 0 / 7px 7px,
+    var(--yellow) !important;
 }
-/* .tab b: the mission title */
-.tabbrowser-tab .tab-label {
-  font: 500 15px var(--f-body) !important;
-  color: #5d6068 !important;
-}
-/* .tab .gl: faint grip mark where the close button sits */
-.tabbrowser-tab .tab-close-button {
-  opacity: 1 !important;
-  width: 14px !important;
-  height: 14px !important;
-}
-.tabbrowser-tab .tab-close-button > .toolbarbutton-icon {
-  width: 14px !important;
-  height: 14px !important;
-  fill: none !important;
-  stroke: #a7aab0 !important;
-  stroke-width: 1.4 !important;
-}
-/* .tab.hov */
-.tabbrowser-tab:hover:not([selected]) .tab-background {
-  background: rgba(205,207,212,.8) !important;
-}
-/* .tab.sel: yellow block + 7px dot texture + big V watermark */
-.tabbrowser-tab[selected] .tab-background {
-  background-color: var(--yellow) !important;
-  background-image: radial-gradient(rgba(17,17,17,.14) 1px, transparent 1.3px) !important;
-  background-size: 7px 7px !important;
+#vertical-tabs .tab-content {
+  position: relative;
   overflow: hidden;
+  padding: 14px 16px !important;
 }
-.tabbrowser-tab[selected] .tab-background::after {
+/* the giant faint "V" on the selected tab */
+#vertical-tabs .tabbrowser-tab[selected] .tab-content::after {
   content: "V";
   position: absolute;
   right: 30px;
-  top: -24px;
-  font: 900 120px var(--f-body);
+  top: -26px;
+  font: 900 120px/1 var(--f-body);
   color: rgba(17,17,17,.06);
-  line-height: 1;
+  pointer-events: none;
 }
-.tabbrowser-tab[selected] .tab-label {
+#vertical-tabs .tab-icon-stack { display: none !important; } /* the mock has no favicons */
+#vertical-tabs .tab-label {
+  font: 500 15px var(--f-body) !important;
+  color: #5d6068 !important;
+}
+#vertical-tabs .tabbrowser-tab[selected] .tab-label {
   font: 600 17px var(--f-body) !important;
   color: #111 !important;
 }
-.tabbrowser-tab[selected] .tab-close-button > .toolbarbutton-icon {
-  stroke: #111 !important;
+/* the close button becomes the mock's square glyph on the right */
+#vertical-tabs .tab-close-button {
+  display: flex !important;
+  width: 16px !important;
+  height: 16px !important;
+  padding: 2px !important;
+  border: 1.4px solid #a7aab0 !important;
+  border-radius: 0 !important;
+  fill: #a7aab0 !important;
+  opacity: 1 !important;
 }
-/* .newt "+ NEW TAB" */
-#tabs-newtab-button,
-#new-tab-button {
-  appearance: none !important;
-  min-height: 40px !important;
-  margin: 10px 8px 0 !important;
+#vertical-tabs .tabbrowser-tab[selected] .tab-close-button { border-color: #111 !important; fill: #111 !important; }
+/* .newt: dashed new-tab row */
+#vertical-tabs-newtab-button,
+#vertical-tabs #tabs-newtab-button {
+  margin-top: 10px !important;
   padding: 12px 18px !important;
   border: 1px dashed rgba(43,45,49,.3) !important;
   border-radius: 0 !important;
   background: transparent !important;
   color: var(--gdim) !important;
+  fill: var(--gdim) !important;
 }
-#tabs-newtab-button::after,
-#new-tab-button::after {
-  content: "NEW TAB";
-  font: 700 10px var(--f-mono);
-  letter-spacing: .2em;
+#vertical-tabs-newtab-button .toolbarbutton-text,
+#vertical-tabs #tabs-newtab-button .toolbarbutton-text {
+  display: flex !important;
+  font: 700 10px var(--f-mono) !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase;
 }
+#vertical-tabs-newtab-button:hover,
+#vertical-tabs #tabs-newtab-button:hover { background: rgba(43,45,49,.06) !important; }
+/* .lfoot: barcode + micro print (a live tab count isn't possible: the tabs sit in a scroll box CSS counters
+   can't see into) */
+#vertical-tabs::after {
+  content: "CLOCKMOST · TABS";
+  margin-top: auto;
+  padding: 12px 0 0 86px;
+  font: 8px var(--f-mono);
+  letter-spacing: .16em;
+  color: var(--gdim);
+  background: repeating-linear-gradient(90deg, var(--gdim) 0 2px, transparent 2px 4px, var(--gdim) 4px 5px, transparent 5px 8px) 0 12px / 76px 10px no-repeat;
+}
+
+/* the website = the dark section, inset like the mock (sidebar 20+300+20) */
+#tabbrowser-tabbox { margin-top: 0 !important; }
+.browserContainer { border-radius: 0 !important; box-shadow: none !important; }

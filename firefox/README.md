@@ -131,3 +131,27 @@ When you first run it, check:
 
 CSS was brace/paren-balanced with a local `python3` check (no Firefox or CSS linter available in this
 environment). Nothing was rendered; see the live-check list above.
+
+
+## Live check + rewrite (2026-10-13, VM: Firefox 157.0.1)
+
+The worker draft targeted pre-157 markup and set `fill: none` on every toolbar icon (Firefox icons are fills),
+so the nav buttons vanished. `userChrome.css` was rewritten against the real 157 markup (read from omni.ja):
+`<moz-urlbar>` + `.urlbar-background` (no `#urlbar-background`), the shield is the new trust icon
+`#trust-icon-container`, `#vertical-tabs` / `#tabbrowser-tabs` (forced to the sidebar's width),
+`#vertical-tabs-newtab-button`. Window buttons: the native glyphs are hidden and the mock's glyphs drawn as SVG masks
+(the close glyph wouldn't recolour); `clip-path: circle()` for the round close.
+
+user.js (profile) - besides the four prefs above:
+
+    user_pref("sidebar.visibility", "always-show");
+    user_pref("sidebar.backupState", "{\"launcherWidth\":300,\"launcherExpanded\":true,\"launcherVisible\":true}");
+    user_pref("ui.GtkCSDMinimizeButton", 1);  user_pref("ui.GtkCSDMinimizeButtonPosition", 0);
+    user_pref("ui.GtkCSDMaximizeButton", 1);  user_pref("ui.GtkCSDMaximizeButtonPosition", 1);
+    user_pref("ui.GtkCSDCloseButton", 1);     user_pref("ui.GtkCSDCloseButtonPosition", 2);
+
+(Plasma's settings portal publishes no GTK button layout, so Firefox showed close only.)
+
+Can't match (CSS limits): the tab's second line (url · age), bold host / grey path in the URL, live S.O.W. / tab
+counts (tabs live in a scroll box counters can't see into), the sidebar tool icons (shadow DOM, no parts - remove
+them once via the sidebar's "Customize sidebar"). Favicons are hidden in the tab list (the mock has none).
