@@ -1,0 +1,313 @@
+/* userChrome.css - Intel Archive light chrome for Firefox 157 (CachyOS / KDE Wayland).
+   Source of truth: ref/mocks/components/ds-firefox-v3.html + ds-shell.css (house style).
+   Installs into <profile>/chrome/userChrome.css. Requires toolkit.legacyUserProfileCustomizations.stylesheets = true.
+   Colours are copied from the mockup hex-for-hex. Small print is static texture (CSS cannot count tabs/bookmarks). */
+
+:root {
+  /* palette - ds-firefox-v3 :root + ds-shell.css (--yellow) */
+  --paper:  #e9eaed;
+  --paper2: #f4f5f7;
+  --rule:   #3a3c41;
+  --gink:   #2b2d31;
+  --gdim:   #7d8089;
+  --cyanp:  #2aa8e0;
+  --yellow: #FFFA00;
+  /* type - order S-firefox: mono = JetBrains Mono, body = Inter (see README) */
+  --f-mono: "JetBrains Mono", Consolas, "Cascadia Mono", ui-monospace, monospace;
+  --f-body: Inter, "Segoe UI", system-ui, sans-serif;
+}
+
+/* the .ffl window ground: white highlight + faint 22px dot grid + pale paper gradient */
+#navigator-toolbox,
+#sidebar-main {
+  background:
+    radial-gradient(ellipse 700px 420px at 72% 6%, rgba(255,255,255,.95), transparent 70%),
+    radial-gradient(rgba(43,45,49,.10) 1px, transparent 1.3px) 0 0 / 22px 22px,
+    linear-gradient(180deg, #f1f2f4, #e3e4e8) !important;
+  background-attachment: fixed !important;
+  color: var(--gink);
+}
+#TabsToolbar,
+#nav-bar,
+#PersonalToolbar {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* ---------- .crumb header strip ("// BROWSER" feel) ----------
+   mock: small 700 7px mono "▲▲ FIREFOX 157.0" over 500 16px body "// BROWSER / CLOCKMOST" */
+#navigator-toolbox::before {
+  content: "▲▲ FIREFOX 157.0\A // BROWSER / CLOCKMOST";
+  white-space: pre;
+  display: block;
+  padding: 8px 20px 6px;
+  font: 500 16px/1.15 var(--f-body);
+  letter-spacing: .04em;
+  color: var(--gink);
+}
+
+/* ---------- .hr2: the thin rule with the break in the middle, under the chrome ---------- */
+#navigator-toolbox::after {
+  content: "";
+  display: block;
+  height: 6px;
+  margin: 0 40px;
+  background:
+    linear-gradient(var(--rule), var(--rule)) 0 2px / 41% 1px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 100% 2px / 41% 1px no-repeat,
+    linear-gradient(rgba(58,60,65,.18), rgba(58,60,65,.18)) 50% 1px / 18% 3px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) 50% -1px / 1px 9px no-repeat;
+}
+
+/* ---------- window buttons (.mm min/max squares + .xc dark circle close) ---------- */
+.titlebar-buttonbox { gap: 6px; }
+.titlebar-button {
+  appearance: none !important;
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1px solid rgba(43,45,49,.4) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--gink) !important;
+}
+.titlebar-button > .toolbarbutton-icon { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 3; }
+.titlebar-close {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  background: var(--gink) !important;
+  color: var(--paper2) !important;
+  border-color: var(--gink) !important;
+}
+.titlebar-close:hover { background: #17181b !important; }
+
+/* ---------- .addr address row ---------- */
+#urlbar {
+  --urlbar-height: 40px;
+  color: var(--gink);
+}
+#urlbar-background {
+  min-height: 40px !important;
+  background: rgba(255,255,255,.75) !important;
+  border: 1px solid rgba(43,45,49,.35) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+/* yellow = focused (house rule) */
+#urlbar[focused] > #urlbar-background,
+#urlbar[open] > #urlbar-background {
+  border-color: var(--yellow) !important;
+  outline: 1px solid var(--yellow) !important;
+}
+/* .sid black site-identity block */
+#identity-box {
+  background: var(--gink) !important;
+  color: var(--paper2) !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+#identity-box[pageproxystate="invalid"] { background: #d91e36 !important; }
+#identity-icon { fill: var(--paper2) !important; stroke: var(--paper2) !important; }
+#identity-icon-label {
+  font: 700 9px var(--f-mono) !important;
+  letter-spacing: .18em !important;
+  text-transform: uppercase !important;
+  color: var(--paper2) !important;
+}
+/* .u the URL text (bold host / grey path is NOT possible - see README) */
+#urlbar-input {
+  font: 14px var(--f-body) !important;
+  color: var(--gink) !important;
+}
+#urlbar-input::selection { background: var(--yellow); color: #111; }
+
+/* nav + action buttons: square 28px cells, ink icons, disabled = .3 (mock .nav .off) */
+#nav-bar toolbarbutton,
+#urlbar toolbarbutton {
+  appearance: none !important;
+  border-radius: 0 !important;
+  color: var(--gink) !important;
+}
+#nav-bar .toolbarbutton-icon,
+#urlbar .toolbarbutton-icon {
+  width: 16px !important;
+  height: 16px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 2.4 !important;
+}
+#nav-bar toolbarbutton[disabled] { opacity: .3 !important; }
+/* the mock's yellow NEW badge on the download button (.ex .nw2) */
+.toolbarbutton-badge {
+  background: var(--yellow) !important;
+  color: #111 !important;
+  border: 0 !important;
+  font: 700 7px var(--f-mono) !important;
+  padding: 1px 3px !important;
+}
+
+/* ---------- .bms bookmarks toolbar: greyscale favicons -> colour on hover (WORKLOG decision) ---------- */
+#PersonalToolbar {
+  padding: 0 20px !important;
+  min-height: 32px !important;
+}
+#PersonalToolbar .bookmark-item {
+  appearance: none !important;
+  padding: 4px 6px !important;
+  margin: 0 12px 0 0 !important;
+  border-radius: 0 !important;
+  font: 12px var(--f-body) !important;
+  color: var(--gink) !important;
+}
+#PersonalToolbar .bookmark-item:hover:not([disabled]) {
+  background: rgba(205,207,212,.8) !important;
+}
+#PersonalToolbar .bookmark-item .toolbarbutton-icon {
+  width: 14px !important;
+  height: 14px !important;
+  margin-inline-end: 6px !important;
+  filter: grayscale(1);
+}
+#PersonalToolbar .bookmark-item:hover .toolbarbutton-icon {
+  filter: none;
+}
+/* .bms .end micro label at the right end */
+#PersonalToolbar::after {
+  content: "BOOKMARKS · OTHER ›";
+  margin-left: auto;
+  padding-right: 4px;
+  font: 9px var(--f-mono) !important;
+  letter-spacing: .16em;
+  color: var(--gdim);
+}
+
+/* ---------- .lt vertical mission tabs (sidebar.verticalTabs), 300px ---------- */
+#sidebar-main {
+  width: 300px !important;
+  min-width: 300px !important;
+  max-width: 300px !important;
+}
+#sidebar-splitter {
+  border: 0 !important;
+  border-right: 1px solid rgba(43,45,49,.3) !important;
+  background: transparent !important;
+  width: 1px !important;
+}
+/* .dev dark space header ("SPACE · CLOCKMOST") */
+#sidebar-main::before {
+  content: "▼ SPACE · CLOCKMOST";
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 10px;
+  background: #17181b;
+  color: #d8d9de;
+  font: 700 9px var(--f-mono);
+  letter-spacing: .14em;
+  overflow: hidden;
+}
+/* .lfoot micro footer (static texture - CSS cannot count tabs) */
+#sidebar-main::after {
+  content: "TABS · SPACES · CTRL 1-3";
+  margin-top: auto;
+  padding: 8px 10px;
+  font: 8px var(--f-mono);
+  letter-spacing: .16em;
+  color: var(--gdim);
+}
+
+#tabbrowser-tabs,
+#tabbrowser-arrowscrollbox {
+  background: transparent !important;
+}
+/* .tab row: translucent white over the dot grid, hairline between rows */
+.tabbrowser-tab {
+  appearance: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 56px !important;
+  border-bottom: 1px solid rgba(43,45,49,.18) !important;
+  border-radius: 0 !important;
+}
+.tabbrowser-tab .tab-background {
+  appearance: none !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: rgba(255,255,255,.55) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.tabbrowser-tab .tab-stack { margin: 0 !important; }
+.tabbrowser-tab .tab-content {
+  padding: 12px 40px 12px 16px !important;
+}
+/* .tab b: the mission title */
+.tabbrowser-tab .tab-label {
+  font: 500 15px var(--f-body) !important;
+  color: #5d6068 !important;
+}
+/* .tab .gl: faint grip mark where the close button sits */
+.tabbrowser-tab .tab-close-button {
+  opacity: 1 !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+.tabbrowser-tab .tab-close-button > .toolbarbutton-icon {
+  width: 14px !important;
+  height: 14px !important;
+  fill: none !important;
+  stroke: #a7aab0 !important;
+  stroke-width: 1.4 !important;
+}
+/* .tab.hov */
+.tabbrowser-tab:hover:not([selected]) .tab-background {
+  background: rgba(205,207,212,.8) !important;
+}
+/* .tab.sel: yellow block + 7px dot texture + big V watermark */
+.tabbrowser-tab[selected] .tab-background {
+  background-color: var(--yellow) !important;
+  background-image: radial-gradient(rgba(17,17,17,.14) 1px, transparent 1.3px) !important;
+  background-size: 7px 7px !important;
+  overflow: hidden;
+}
+.tabbrowser-tab[selected] .tab-background::after {
+  content: "V";
+  position: absolute;
+  right: 30px;
+  top: -24px;
+  font: 900 120px var(--f-body);
+  color: rgba(17,17,17,.06);
+  line-height: 1;
+}
+.tabbrowser-tab[selected] .tab-label {
+  font: 600 17px var(--f-body) !important;
+  color: #111 !important;
+}
+.tabbrowser-tab[selected] .tab-close-button > .toolbarbutton-icon {
+  stroke: #111 !important;
+}
+/* .newt "+ NEW TAB" */
+#tabs-newtab-button,
+#new-tab-button {
+  appearance: none !important;
+  min-height: 40px !important;
+  margin: 10px 8px 0 !important;
+  padding: 12px 18px !important;
+  border: 1px dashed rgba(43,45,49,.3) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--gdim) !important;
+}
+#tabs-newtab-button::after,
+#new-tab-button::after {
+  content: "NEW TAB";
+  font: 700 10px var(--f-mono);
+  letter-spacing: .2em;
+}
