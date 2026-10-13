@@ -310,3 +310,8 @@
 /* the website = the dark section, inset like the mock (sidebar 20+300+20) */
 #tabbrowser-tabbox { margin-top: 0 !important; }
 .browserContainer { border-radius: 0 !important; box-shadow: none !important; }
+
+/* collapsed sidebar: Firefox keeps each tab a fixed small square - stretch it so the highlight spans the rail */
+#tabbrowser-tabs:not([expanded]) .tabbrowser-tab { width: 100% !important; max-width: none !important; }
+#tabbrowser-tabs:not([expanded]) .tab-background { margin-inline: 0 !important; width: auto !important; }
+#tabbrowser-tabs:not([expanded]) .tab-content { justify-content: center !important; }
