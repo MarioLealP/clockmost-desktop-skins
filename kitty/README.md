@@ -16,6 +16,11 @@ Also in `kitty.conf` (not the theme): right click pastes, Windows-Terminal style
 system-wide autoscroll now (clockmost-shell `autoscroll/`; Mario 2026-10-14):
 
     mouse_map right press ungrabbed paste_from_clipboard
+    map ctrl+v paste_from_clipboard
+    map ctrl+c copy_or_interrupt
+
+Ctrl+V pastes and Ctrl+C copies a selection (else interrupts), as in Windows Terminal - also what Win+V's
+paste-on-pick presses (Mario 2026-10-14: "as windows as possible"). Ctrl+Shift+V / Ctrl+Shift+C still work.
 
 ## Fonts needed
 
