@@ -149,6 +149,7 @@ user.js (profile) - besides the four prefs above:
     user_pref("ui.GtkCSDMinimizeButton", 1);  user_pref("ui.GtkCSDMinimizeButtonPosition", 0);
     user_pref("ui.GtkCSDMaximizeButton", 1);  user_pref("ui.GtkCSDMaximizeButtonPosition", 1);
     user_pref("ui.GtkCSDCloseButton", 1);     user_pref("ui.GtkCSDCloseButtonPosition", 2);
+    user_pref("general.autoScroll", true);  // Windows-style middle-click autoscroll (Mario 2026-10-14; off by default on Linux)
 
 (Plasma's settings portal publishes no GTK button layout, so Firefox showed close only.)
 
