@@ -12,6 +12,11 @@ Real kitty config + Claude Code statusLine for the approved mockup
 | `tab_bar.py` | `~/.config/kitty/tab_bar.py` | the slim tab line (kitty loads it automatically when `tab_bar_style custom` is set) |
 | `claude-statusline.sh` | `~/.config/kitty/claude-statusline.sh` (`chmod +x`) | Claude Code `statusLine` command — the mockup's `.sl` row |
 
+Also in `kitty.conf` (not the theme): right click pastes, Windows-Terminal style, because middle click is the
+system-wide autoscroll now (clockmost-shell `autoscroll/`; Mario 2026-10-14):
+
+    mouse_map right press ungrabbed paste_from_clipboard
+
 ## Fonts needed
 
 - **Mono (kitty terminal + tab labels): JetBrains Mono** — the mockup uses Consolas
